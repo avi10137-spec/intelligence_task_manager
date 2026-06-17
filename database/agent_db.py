@@ -18,8 +18,8 @@ class AgentDB:
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
         cur.execute("SELECT * FROM agents")
-        all_books=cur.fetchall()
-        return all_books
+        all_agents=cur.fetchall()
+        return all_agents
     def get_agent_by_id(self,id:int)->dict |None:
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
