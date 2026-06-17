@@ -1,4 +1,3 @@
-from concurrent.interpreters import create
 
 import mysql.connector
 from mysql.connector import Error
@@ -65,14 +64,14 @@ class DbConnection:
         cur.close()
         conn.close()
         return
-db=DbConnection()
-db.get_connection()
-db.create_database()
-db.create_table_agents()
-db.create_table_missions()
 
 
-
+if __name__=="__main__":
+    db = DbConnection()
+    db.get_connection()
+    db.create_database()
+    db.create_table_agents()
+    db.create_table_missions()
 
 
 
