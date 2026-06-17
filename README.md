@@ -93,6 +93,7 @@ docker ps
 Run a connection 
 docker exec -it intelligence-mysql mysql -uroot -p1234
 docker start 
+install fastapi uvicorn mysql-connector-python in irtual inverment
 uvicorn run main.app app --relode
 run the server :
 http:/127.0.0.1:8000/docs
