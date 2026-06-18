@@ -98,4 +98,44 @@ uvicorn run main.app app --relode
 run the server :
 http:/127.0.0.1:8000/docs
  
-       
+## list endpoint
+[post]/agents
+[get]/agents
+[get]/agents{id}
+[put]/agents{id}
+[put]/agents/{id}/deactivate
+[get]/agents/{id}/performance
+[post]/missions
+[get]/missions
+[get]/missions/{id}
+[put]/missions/{id}/assign/{agent_id}
+[put]/missions/{id}/start
+[put]/missions/{id}/complete
+[put]/missions/{id}/fail
+[put]/missions/{id}/cancel
+[get]/reports/summary
+[get]/reports/missions-by-status
+[get]/reports/top-agent
+## flow system
+Fastapi post request with body of details 
+The system verifies that the details are correct and creates 
+, in the task the same thing through the post request 
+If the user wants to associate a task with a put request 
+The system will check if the agent and the task exist 
+The task is in new status The agent is active 
+He does not have more than 3 open tasks 
+And if the task is critical The agent must be commander 
+If the user wants to start a task 
+He sends a put request with agent details to create a start 
+The same also at the end 
+And if the user wants data reports he has 
+Option with a get request 
+For reports on rules, tasks, or a specific agent
+## run instructions with server fastapi
+ In the main file, the program is run 
+The database and tables are created 
+And uvicorn starts running, which listens for requests 
+Then the user can, through a url request or through 
+"127.0.0.1:8000/docs" 
+Perform all the operations
+ '

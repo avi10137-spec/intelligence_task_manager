@@ -1,8 +1,9 @@
 from db_connection import DbConnection
-from agent_db import AgentDB
-a=AgentDB()
+
+
 db=DbConnection()
-open_missions=["NEW","ASSIGNED","IN_PROGRESS"]
+
+# open_missions=["NEW","ASSIGNED","IN_PROGRESS"]
 class MissionDB:
     def __init__(self):
         pass
@@ -63,11 +64,13 @@ class MissionDB:
         cur.close()
         conn.close()
         return change
-    def get_open_mission_by_agent(self,id):
+    def get_open_mission_by_agent(self,id:int):
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
-        cur.execute("SELECT  *  FROM agents WHERE status = ASSIGNED or status = IN_PROGRESS and  assigned_agent_id = %s",(id,))
-        total = cur.fetchone()
+        sql=" SELECT  *  FROM missions WHERE assigned_agent_id = %s and status = %s OR status = %s   "
+        values= (id,"IN_PROGRAS","assigned")
+        cur.execute(sql,values)
+        total = cur.fetchall()
         conn.commit()
         cur.close()
         conn.close()
@@ -95,9 +98,11 @@ class MissionDB:
     def count_open_mission(self):
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
-        cur.execute("SELECT COUNT(*)as total_missions_of_open FROM missions WHERE status in open_missions ")
+        sql= "SELECT COUNT(*)as total_missions_of_open FROM missions WHERE status = %s or status = %s or status = %s "
+        values = ("NEW","ASSIGNED","IN_PROGRESS")
+        cur.execute(sql,values)
 
-        total = cur.fetchone()
+        total = cur.fetchall()
         conn.commit()
         cur.close()
         conn.close()
@@ -114,7 +119,19 @@ class MissionDB:
     def get_top_agent(self):
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
-        cur.execute("SELECT assigned_agent_id  FROM agent ORDER BY ")
+        cur.execute("SELECT *  FROM agents ORDER BY completed_mission DESC LIMIT 1 ")
+        total = cur.fetchone()
+        conn.commit()
+        cur.close()
+        conn.close()
+        return total
+    def count_mission_by_id(self,id):
+        conn = db.get_connection()
+        cur = conn.cursor(dictionary=True)
+        sql = "SELECT assigned_agent_id ,COUNT(*)as total_missions_of_open FROM missions GROUP BY assigned_agent_id  HAVING  assigned_agent_id = %s "
+        values = (id,)
+        cur.execute(sql, values)
+
         total = cur.fetchone()
         conn.commit()
         cur.close()
@@ -129,16 +146,20 @@ class MissionDB:
 
 
 
+
 m=MissionDB()
-# print(m.calculate_risk_level(8,9))
-# print(m.create_mission({"title":"isuf","description":"look for information","location":"france","difficulty":9,"importance":8,"status":"assigned","assigned_agent_id":7}))
-# print(m.get_all_missions())
-# print(m.mission_by_id(2))
-# print(m.assign_mission(2,8))
-# print(m.update_mission_status(1,"IN_PROGRAS"))
-# print(m.get_open_mission_by_agent(2))
-# print(m.count_all_missions())
-# print(m.count_by_status("IN_PROGRAS"))
-# print(m.count_open_mission())
-# print(m.count_critical_missions())
-print(m.get_top_agent())
+
+# if __name__ == "__main__":
+    # print(m.calculate_risk_level(8,9))
+# print(m.create_mission({"title":"isuf","description":"look for information","location":"france","difficulty":9,"importance":8,"status":"FAILED","assigned_agent_id":2}))
+    # print(m.get_all_missions())
+    # print(m.mission_by_id(2))
+    # print(m.assign_mission(2,8))
+    # print(m.update_mission_status(1,"IN_PROGRAS"))
+    # print(m.get_open_mission_by_agent(8))
+    # print(m.count_all_missions())
+    # print(m.count_by_status("assigned"))
+    # print(m.count_open_mission())
+    # print(m.count_critical_missions())
+    # print(m.get_top_agent())
+print(m.count_mission_by_id(2))
