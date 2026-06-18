@@ -1,5 +1,5 @@
-from db_connection import DbConnection
-from mission_db import MissionDB
+from database.db_connection  import DbConnection
+from database.mission_db import MissionDB
 db=DbConnection()
 m=MissionDB()
 class AgentDB:
@@ -13,9 +13,10 @@ class AgentDB:
         cur.execute(sql,values)
         conn.commit()
         new_id=cur.lastrowid
+        agent=a.get_agent_by_id(new_id)
         cur.close()
         conn.close()
-        return new_id
+        return agent
     def get_all_agents(self)->list:
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
@@ -109,7 +110,7 @@ if __name__ == "__main__":
 # print(a.create_agent({"name":"nati","specialty":"tevel","completed_mission":1,"failed_mission":1,"agent_rank":"Senior"}))
 # print(a.get_all_agents())
 # print(a.get_agent_by_id(4))
-# a.update_agent(2,{"name":"aron","speciality":"falstin","completed_mission":3,"failed_mission":1,"agent_rank":"Senior"})
+# a.update_agent(2,{"name":"kobi"})
 # print(a.deactivate_agent(2))
 # print(a.increment_completed(2))
 # print(a.increment_failed(2))

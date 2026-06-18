@@ -1,4 +1,4 @@
-from db_connection import DbConnection
+from database.db_connection import DbConnection
 
 
 db=DbConnection()
@@ -27,9 +27,10 @@ class MissionDB:
         cur.execute(sql, values)
         conn.commit()
         new_id = cur.lastrowid
+        mission=m.mission_by_id(new_id)
         cur.close()
         conn.close()
-        return new_id
+        return mission
     def get_all_missions(self)->list:
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
