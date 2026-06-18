@@ -1,5 +1,4 @@
-__pycache__/
-*.log
+__pycache__
 .env
 .envrc
 .venv
@@ -8,4 +7,4 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-*.txt
+

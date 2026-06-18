@@ -2,9 +2,11 @@ from database.db_connection import DbConnection
 
 
 db=DbConnection()
+trans_mission={"NEW":["ASSIGNED","CANCELLED"],"ASSIGNED":["IN_PROGRESS","FAILED","CANCELLED"],"IN_PROGRESS":["COMPLETED","FAILED"],"COMPLETED":[],"FAILED":[],"CANCELED":[]}
 
 # open_missions=["NEW","ASSIGNED","IN_PROGRESS"]
 class MissionDB:
+
     def __init__(self):
         pass
     def calculate_risk_level(self,difficulty,importance):
@@ -55,16 +57,22 @@ class MissionDB:
         conn.close()
         return change
     def update_mission_status(self,id,status):
+
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
+        # curent_mission = self.mission_by_id(id)
+        # current=curent_mission["status"]
+        # print(curent_mission["status"])
+        # if status in trans_mission["current"]:
         sql = "UPDATE missions SET  status =%s WHERE id = %s"
-        values = (status,id)
+        values = (status, id)
         cur.execute(sql, values)
         conn.commit()
         change = cur.rowcount > 0
         cur.close()
         conn.close()
         return change
+        # raise ("invalid trans")
     def get_open_mission_by_agent(self,id:int):
         conn = db.get_connection()
         cur = conn.cursor(dictionary=True)
@@ -156,11 +164,11 @@ m=MissionDB()
     # print(m.get_all_missions())
     # print(m.mission_by_id(2))
     # print(m.assign_mission(2,8))
-    # print(m.update_mission_status(1,"IN_PROGRAS"))
+# print(m.update_mission_status(1,"IN_PROGRESS"))
     # print(m.get_open_mission_by_agent(8))
     # print(m.count_all_missions())
     # print(m.count_by_status("assigned"))
     # print(m.count_open_mission())
     # print(m.count_critical_missions())
-    # print(m.get_top_agent())
-print(m.count_mission_by_id(2))
+print(m.get_top_agent())
+# print(m.count_mission_by_id(2))
